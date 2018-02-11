@@ -5,8 +5,8 @@ function getStats(txt) {
     let listOfPalindromes = [];
     let longestWords = [];
     let lineInfo = getLineInfo(txt);
-    let tenLongestWords = [];
-    let wordInfo = getWordInfo(txt, listOfPalindromes, longestWords, tenLongestWords);
+    //let tenLongestWords = [];
+    let wordInfo = getWordInfo(txt, listOfPalindromes, longestWords);
 
     return {
         nChars: getNChars(txt),
@@ -16,7 +16,7 @@ function getStats(txt) {
         averageWordLength: wordInfo.avgWLength,
         maxLineLength: lineInfo.maximumLength,
         palindromes: Array.from(new Set(listOfPalindromes)),
-        longestWords: Array.from(new Set(tenLongestWords)),
+        longestWords: Array.from(new Set(wordInfo.sortedArr)),
         mostFrequentWords: wordInfo.tenMostFreqWords
     };
 }
@@ -25,13 +25,14 @@ function getNChars(txt){
     return txt.length;
 }
 
-function getWordInfo(txt, listOfPalindromes, longestWords, tenLongestWords){
+function getWordInfo(txt, listOfPalindromes, longestWords){
     txt = txt.toLowerCase();
     let noSpaceNoCommasTxt=txt.split(/[\s\W]/);
     let EmptyCount = 0;
     let charCountOfWord= 0;
     let numberOfWords;
     let averageWordL;
+    let tenLongestWords = [];
  //   let items = []
     for(let i=0; i < noSpaceNoCommasTxt.length;i++){
         if( noSpaceNoCommasTxt[i] === ""){
@@ -54,16 +55,16 @@ function getWordInfo(txt, listOfPalindromes, longestWords, tenLongestWords){
     numberOfWords = noSpaceNoCommasTxt.length - EmptyCount;
     averageWordL = charCountOfWord/numberOfWords;
     //sort all of the words we have based on their length first and then based on their character set
-   // console.log(longestWords);
+    console.log(longestWords);
     longestWords.sort(compareLength);
     //console.log("\n sorted");
    // console.log(longestWords.reverse());
     //tenLongestWords[];
     // get the 10 longest words 
-    for(let i=0; (i< 10) && (i < longestWords.length); i++){
+    for(let i=0; (i < 10) && (i < Array.from(new Set(longestWords)).length); i++){
         tenLongestWords.push(Array.from(new Set(longestWords))[i]);
     }
-
+    console.log(tenLongestWords);
 
     let listOfWordsAndCountsMap = createWordMap(longestWords);
   //  console.log("word Map");
